@@ -1,0 +1,87 @@
+<div [formGroup]="form" class="mb-4">
+  <label [for]="field.name" class="block mb-2 font-medium text-gray-700">
+    {{ field.label }}
+    <span *ngIf="isRequired" class="text-red-500">*</span>
+  </label>
+
+  <ng-container [ngSwitch]="field.type">
+    <!-- Input -->
+    <input
+      *ngSwitchCase="fieldTypes.Input"
+      [id]="field.name"
+      type="text"
+      [formControlName]="field.name"
+      [placeholder]="field.placeholder || ''"
+      class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+      [class.border-red-500]="isInvalid"
+    >
+
+    <!-- Email -->
+    <input
+      *ngSwitchCase="fieldTypes.Email"
+      [id]="field.name"
+      type="email"
+      [formControlName]="field.name"
+      [placeholder]="field.placeholder || ''"
+      class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+      [class.border-red-500]="isInvalid"
+    >
+
+    <!-- Phone -->
+    <input
+      *ngSwitchCase="fieldTypes.Phone"
+      [id]="field.name"
+      type="tel"
+      [formControlName]="field.name"
+      [placeholder]="field.placeholder || ''"
+      class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+      [class.border-red-500]="isInvalid"
+    >
+
+    <!-- Textarea -->
+    <textarea
+      *ngSwitchCase="fieldTypes.Textarea"
+      [id]="field.name"
+      [formControlName]="field.name"
+      [placeholder]="field.placeholder || ''"
+      [rows]="field.type === fieldTypes.Textarea ? field.rows || 3 : 3"
+      class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+      [class.border-red-500]="isInvalid"
+    ></textarea>
+
+    <!-- Select -->
+    <select
+      *ngSwitchCase="fieldTypes.Select"
+      [id]="field.name"
+      [formControlName]="field.name"
+      class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+      [class.border-red-500]="isInvalid"
+    >
+      <option value="">{{ field.placeholder || 'Выберите...' }}</option>
+      <option 
+        *ngFor="let option of (field.type === fieldTypes.Select ? field.options : [])" 
+        [value]="option.value"
+      >
+        {{ option.label }}
+      </option>
+    </select>
+
+    <!-- Checkbox -->
+    <div *ngSwitchCase="fieldTypes.Checkbox" class="flex items-center">
+      <input
+        [id]="field.name"
+        type="checkbox"
+        [formControlName]="field.name"
+        class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+      >
+      <span class="ml-2 text-gray-700">{{ field.label }}</span>
+    </div>
+  </ng-container>
+
+  <div
+    *ngIf="isInvalid"
+    class="text-red-500 text-sm mt-1"
+  >
+    {{ field.validationMessage || 'Поле заполнено некорректно' }}
+  </div>
+</div>

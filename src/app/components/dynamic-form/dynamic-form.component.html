@@ -1,0 +1,30 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
+  <h2 class="text-2xl font-bold mb-6 text-gray-900">Анкета</h2>
+  
+  <div *ngIf="submitMessage" class="mb-4 p-3 rounded-md" [ngClass]="{
+    'bg-green-100 text-green-800': submitSuccess,
+    'bg-red-100 text-red-800': !submitSuccess
+  }">
+    {{ submitMessage }}
+  </div>
+  
+  <div class="space-y-4">
+    <ng-container *ngFor="let field of fields">
+      <app-dynamic-field
+        [field]="field"
+        [form]="form"
+      ></app-dynamic-field>
+    </ng-container>
+  </div>
+
+  <button
+    type="submit"
+    class="w-full mt-6 px-6 py-2 bg-yellow-200 hover:bg-yellow-300 rounded-md transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+    [disabled]="form.invalid || isSubmitting"
+  >
+    <ng-container *ngIf="!isSubmitting">Отправить</ng-container>
+    <ng-container *ngIf="isSubmitting">
+      <span class="inline-block animate-pulse">Отправка...</span>
+    </ng-container>
+  </button>
+</form>
